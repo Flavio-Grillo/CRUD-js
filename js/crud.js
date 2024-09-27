@@ -58,10 +58,57 @@ function adicionarColunaCRUD(){
 
         btns.forEach(btn => {
             const botao = document.createElement("button");
+            if (btn == "Editar"){
+                botao.setAttribute("onclick", "editarLinha(this)");
+            }else {
+                botao.setAttribute("onclick", "excluirUsuario(this)")
+
+            }
             botao.textContent = btn;
             novaCelula.appendChild(botao);
-            
         });
     }
+}
 
+
+//limpa os inputs do for 
+
+function limparFormulario(){
+    //pega todos os inputs do form
+    const inputs = document.querySelectorAll('input');
+
+    // intera pelo array de inputs  limpando o campo 
+    inputs.forEach(input => {
+    inputs.values= "";
+    });
+}
+
+// captura o usuario da linha em que o botao foi clickado 
+
+function editarLinha(button){
+    //pega a tr da linha do botao
+    const linha = button.closest('tr');
+
+    //pega todas as células da linha 
+    const colunas = linha.getElementsByTagName("td");
+
+    //cria um objeto JSON para transferir os dados do usuario 
+    const user = {
+        id: colunas [0].textContent, 
+        nome: colunas [1].textContent,
+        cidade: colunas [2].textContent,
+        telefone: colunas [3].textContent
+    };
+    console.log(user);
+    jsonToForm(user);
+}
+
+//transfere os dados da linha da tabela para o form 
+function jsonToForm(user){
+    for (const key in user){
+        const input = document.querySelector(`[nome="${key}"]`);
+        if(input){
+            input.value = user[key];
+        }
+    }
 }
